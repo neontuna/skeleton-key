@@ -1,5 +1,5 @@
 # Base-image for python on any machine using a template variable
-FROM resin/%%RESIN_MACHINE_NAME%%-python:3.7
+FROM balenalib/%%RESIN_MACHINE_NAME%%-python:3.7.3
 
 # Set the maintainer
 LABEL maintainer="Justin Mullis <justinm@fastmail.com>"
