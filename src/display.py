@@ -43,7 +43,7 @@ def main():
         
         if counter == 9:
             lcd.clear()
-            subprocess.call(["resin-wifi-connect", "--clear=true"])
+            subprocess.call(["wifi-connect", "--clear=true"])
             break
         
         if GPIO.input(10) == 0:
