@@ -1,6 +1,8 @@
 import subprocess
 import time
+import socket
 import RPi.GPIO as GPIO
+import led
 from PCF8574 import PCF8574_GPIO
 from Adafruit_LCD1602 import Adafruit_CharLCD
 
@@ -26,6 +28,19 @@ GPIO.setwarnings(False) # Ignore warning for now
 GPIO.setmode(GPIO.BOARD) # Use physical pin numbering
 GPIO.setup(10, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
+led.setup()
+
+def is_connected():
+    try:
+        socket.create_connection(("www.google.com", 80), 5)
+        return True
+    except OSError:
+        pass
+    return False
+
+def destroy():
+    lcd.clear()
+
 def main():
     SSID = None
     counter = 0
@@ -44,27 +59,41 @@ def main():
         
         if counter == 5:
             lcd.clear()
+            lcd.setCursor(0,0)
+            lcd.message('Not connected\nWifi Connect running...')
             subprocess.call(["./wifi-connect"])
-            break
         
         if GPIO.input(10) == 0:
             counter = 0
-            break
-    
+
     try:
         SSID = subprocess.check_output(["iwgetid", "-r"]).strip().decode('UTF-8')
         # import code; code.interact(local=dict(globals(), **locals()))
     except subprocess.CalledProcessError:
         pass
+    
         
     if SSID is None:
         if displaying != 'disconnected':
+            print('set red')
+            led.setRed()
             lcd.clear()
             displaying = 'disconnected'
         lcd.setCursor(0,0)
         lcd.message('Not connected')
+    elif is_connected() is False:
+        if displaying != 'no_internet':
+            led.setYellow()
+            lcd.clear()
+            displaying = 'no_internet'
+        led.turnOff()
+        time.sleep(1)
+        led.setYellow()
+        lcd.setCursor(0,0)
+        lcd.message('Wireless Connected\nbut no Internet?')
     else:
         if displaying != 'ssid':
+            led.setGreen()
             lcd.clear()
             displaying = 'ssid'
         lcd.setCursor(0,0)
