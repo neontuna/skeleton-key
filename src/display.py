@@ -43,25 +43,21 @@ def destroy():
 
 def main():
     SSID = None
+    wifi_connect = False
     counter = 0
     global displaying 
     
     while GPIO.input(10) == 1:
-        if displaying != 'reset':
-            lcd.clear()
-            displaying = 'reset'
-
-        lcd.setCursor(0,0)
-        lcd.message('Resetting')
-
         time.sleep(1)
         counter = counter + 1
         
         if counter == 5:
+            led.setBlue()
             lcd.clear()
             lcd.setCursor(0,0)
-            lcd.message('Not connected\nWifi Connect running...')
-            subprocess.call(["./wifi-connect"])
+            lcd.message('Resetting!')
+            time.sleep(1)
+            subprocess.Popen(["./reset.sh"], shell=True, executable="/bin/bash")
         
         if GPIO.input(10) == 0:
             counter = 0
@@ -71,9 +67,24 @@ def main():
         # import code; code.interact(local=dict(globals(), **locals()))
     except subprocess.CalledProcessError:
         pass
-    
         
-    if SSID is None:
+    try:
+        wifi_connect = subprocess.check_output(["pgrep", "wifi-connect"]).strip().decode('UTF-8')
+        # import code; code.interact(local=dict(globals(), **locals()))
+    except subprocess.CalledProcessError:
+        pass
+
+    if wifi_connect != False:
+        if displaying != 'wifi_connect':
+            led.setBlue()
+            lcd.clear()
+            displaying = 'wifi_connect'
+        led.turnOff()
+        time.sleep(1)
+        led.setBlue()
+        lcd.setCursor(0,0)
+        lcd.message('Wifi Connect\nRunning...')    
+    elif SSID is None:
         if displaying != 'disconnected':
             print('set red')
             led.setRed()

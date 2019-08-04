@@ -4,7 +4,7 @@
 modprobe i2c-dev
 
 # Run one process loop
-python3 src/display.py
+python3 src/main.py &
 
 # Start resin-wifi-connect
 export DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
@@ -22,4 +22,4 @@ fi
 # internet - unless the configured WiFi connection is no longer available.
 
 # Start the main application
-python3 src/main.py
+sleep infinity
