@@ -1,16 +1,15 @@
 import time
-import display
+import status_loop
 import led
 
 def main():
     while True:
-        display.main()
+        status_loop.main()
         
         time.sleep(5)
         
 if __name__ == "__main__":
     try:
         main()
-    except:  # When 'Ctrl+C' is pressed, the child program destroy() will be  executed.
+    except:
         led.destroy()
-        display.destroy()
