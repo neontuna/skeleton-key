@@ -21,5 +21,5 @@ while [[ true ]]; do
   # 
   # wait $PID1
   # echo 'Monitor script stopped, restarting . . .'
-  sleep indefinitely
+  sleep infinity
 done
