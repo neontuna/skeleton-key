@@ -9,6 +9,9 @@ python3 src/main.py &
 # Start resin-wifi-connect
 export DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
 
+# give pi a few seconds to connect to wifi
+sleep 15
+
 iwgetid -r
 
 if [ $? -eq 0 ]; then
