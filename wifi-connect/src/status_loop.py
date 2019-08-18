@@ -20,6 +20,7 @@ def is_connected():
     return False
 
 def main():
+    SSID = None
     wifi_connect = False
     counter = 0
     global displaying 
