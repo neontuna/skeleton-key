@@ -9,6 +9,7 @@ GPIO.setmode(GPIO.BOARD) # Use physical pin numbering
 GPIO.setup(10, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 led.setup()
+displaying = None
 
 def is_connected():
     try:
