@@ -29,6 +29,7 @@ def main():
         counter = counter + 1
         
         if counter == 5:
+            print('Resetting. . .')
             led.setBlue()
             time.sleep(1)
             subprocess.Popen(["./reset.sh"], shell=True, executable="/bin/bash")
@@ -50,6 +51,7 @@ def main():
 
     if wifi_connect != False:
         if displaying != 'wifi_connect':
+            print('Wifi connect running')
             led.setBlue()
             displaying = 'wifi_connect'
         led.turnOff()
@@ -57,11 +59,12 @@ def main():
         led.setBlue()
     elif SSID is None:
         if displaying != 'disconnected':
-            print('set red')
+            print('Not connected to Wifi')
             led.setRed()
             displaying = 'disconnected'
     elif is_connected() is False:
         if displaying != 'no_internet':
+            print('Connect to Wifi but no internet connection detected')
             led.setYellow()
             displaying = 'no_internet'
         led.turnOff()
@@ -69,6 +72,7 @@ def main():
         led.setYellow()
     else:
         if displaying != 'ssid':
+            print('Connected and online')
             led.setGreen()
             displaying = 'ssid'
         
