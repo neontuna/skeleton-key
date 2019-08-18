@@ -3,9 +3,6 @@
 export DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
 
 while [[ true ]]; do
-  # Run one process loop
-  python3 src/main.py &
-
   # give pi a few seconds to finish boot and connect to wifi
   sleep 10
 
@@ -18,4 +15,6 @@ while [[ true ]]; do
       printf 'Starting WiFi Connect\n'
       ./wifi-connect -a 600
   fi
+  
+  python3 src/main.py
 done
