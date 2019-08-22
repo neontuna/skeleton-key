@@ -14,8 +14,7 @@ services:
       io.balena.features.firmware: '1'
 
   homeassistant:
-    build: 
-      context: ./homeassistant
+    build: ./homeassistant
     volumes:
       - volume_homeassistant:/config
     privileged: true
