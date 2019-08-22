@@ -1,4 +1,8 @@
 version: '2'
+
+volumes:
+  volume_homeassistant:
+
 services:
   wifi-connect:
     build: ./wifi-connect
@@ -8,3 +12,13 @@ services:
     labels:
       io.balena.features.dbus: '1'
       io.balena.features.firmware: '1'
+
+  homeassistant:
+    build: 
+      context: ./homeassistant
+    volumes:
+      - volume_homeassistant:/config
+    privileged: true
+    restart: always
+    ports: 
+      - 8123:8123
