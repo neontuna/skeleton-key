@@ -1,7 +1,26 @@
 {
     "data": {
         "devices": [
-
+            {
+                "area_id": null,
+                "config_entries": [
+                    "ec38cd449cb64476b90f6f4cc2f8430a"
+                ],
+                "connections": [],
+                "id": "457189ce315f4675a63919ea4c339344",
+                "identifiers": [
+                    [
+                        "zwave",
+                        1
+                    ]
+                ],
+                "manufacturer": "AEON Labs",
+                "model": "ZW090 Z-Stick Gen5 US",
+                "name": "AEON Labs ZW090 Z-Stick Gen5 US",
+                "name_by_user": null,
+                "sw_version": null,
+                "via_device_id": null
+            }
         ]
     },
     "key": "core.device_registry",

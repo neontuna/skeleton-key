@@ -18,6 +18,15 @@
                 "name": null,
                 "platform": "met",
                 "unique_id": "home"
+            },
+            {
+                "config_entry_id": "ec38cd449cb64476b90f6f4cc2f8430a",
+                "device_id": "457189ce315f4675a63919ea4c339344",
+                "disabled_by": null,
+                "entity_id": "zwave.aeon_labs_zw090_z_stick_gen5_us",
+                "name": null,
+                "platform": "zwave",
+                "unique_id": "node-1"
             }
         ]
     },

@@ -1,5 +1,26 @@
 {
-    "data": [],
+    "data": [
+        {
+            "last_seen": "2019-08-24T19:58:39.883915+00:00",
+            "state": {
+                "attributes": {
+                    "editable": true,
+                    "friendly_name": "cloudadmin",
+                    "id": "ff472e08c2fb479b85a431c5b551f884",
+                    "user_id": "39585b55511a430689872da3f0077d13"
+                },
+                "context": {
+                    "id": "f18d414c4cd74fda83933a930bb17534",
+                    "parent_id": null,
+                    "user_id": null
+                },
+                "entity_id": "person.cloudadmin",
+                "last_changed": "2019-08-24T19:58:36.072915+00:00",
+                "last_updated": "2019-08-24T19:58:36.072915+00:00",
+                "state": "unknown"
+            }
+        }
+    ],
     "key": "core.restore_state",
     "version": 1
 }
