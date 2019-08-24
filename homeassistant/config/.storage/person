@@ -1,0 +1,14 @@
+{
+    "data": {
+        "persons": [
+            {
+                "device_trackers": [],
+                "id": "ff472e08c2fb479b85a431c5b551f884",
+                "name": "cloudadmin",
+                "user_id": "39585b55511a430689872da3f0077d13"
+            }
+        ]
+    },
+    "key": "person",
+    "version": 1
+}

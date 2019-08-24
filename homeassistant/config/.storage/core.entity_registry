@@ -1,0 +1,26 @@
+{
+    "data": {
+        "entities": [
+            {
+                "config_entry_id": null,
+                "device_id": null,
+                "disabled_by": null,
+                "entity_id": "person.cloudadmin",
+                "name": null,
+                "platform": "person",
+                "unique_id": "ff472e08c2fb479b85a431c5b551f884"
+            },
+            {
+                "config_entry_id": "d2839aa754184044bb579ebaf81fd973",
+                "device_id": null,
+                "disabled_by": null,
+                "entity_id": "weather.mothership",
+                "name": null,
+                "platform": "met",
+                "unique_id": "home"
+            }
+        ]
+    },
+    "key": "core.entity_registry",
+    "version": 1
+}
