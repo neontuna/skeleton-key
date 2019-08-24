@@ -1,0 +1,69 @@
+{
+    "data": {
+        "credentials": [
+            {
+                "auth_provider_id": null,
+                "auth_provider_type": "homeassistant",
+                "data": {
+                    "username": "cloudadmin"
+                },
+                "id": "4f73106b810e411d95e283c0d63df8e6",
+                "user_id": "f80283df94ef46e9ac1315f010fec96a"
+            }
+        ],
+        "groups": [
+            {
+                "id": "system-admin",
+                "name": "Administrators"
+            },
+            {
+                "id": "system-users",
+                "name": "Users"
+            },
+            {
+                "id": "system-read-only",
+                "name": "Read Only"
+            }
+        ],
+        "refresh_tokens": [
+            {
+                "access_token_expiration": 1800.0,
+                "client_icon": null,
+                "client_id": "http://192.168.201.116:8123/",
+                "client_name": null,
+                "created_at": "2019-08-24T15:03:02.720814+00:00",
+                "id": "4d0b5a092f4a4eaf94713a5977cb188a",
+                "jwt_key": "041601fd7f71691718436acecbf8af05ff466b0d99e07cb5df832d14d0458aab84841bb8a0f11ae6e306d3817e77e8190739b1821005cb95f39bac588b3c13a3",
+                "last_used_at": "2019-08-24T15:03:02.721305+00:00",
+                "last_used_ip": "192.168.201.103",
+                "token": "7dd646100c2d0fe2968b55260651df396c2192ffcefdfbb94f20657ac797b5869cb3e9ef28eebd9343324ae036cb9d358d0aaaecf58b75b21efab347b525cfa8",
+                "token_type": "normal",
+                "user_id": "f80283df94ef46e9ac1315f010fec96a"
+            }
+        ],
+        "users": [
+            {
+                "group_ids": [
+                    "system-admin"
+                ],
+                "id": "7eeaffec7a0d4816a0f06107cdf0eb50",
+                "is_active": true,
+                "is_owner": false,
+                "name": "Home Assistant Cloud",
+                "system_generated": true
+            },
+            {
+                "group_ids": [
+                    "system-admin"
+                ],
+                "id": "f80283df94ef46e9ac1315f010fec96a",
+                "is_active": true,
+                "is_owner": true,
+                "name": "cloudadmin",
+                "system_generated": false
+            }
+        ]
+    },
+    "key": "auth",
+    "version": 1
+}
