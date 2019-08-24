@@ -1,0 +1,68 @@
+{
+    "data": {
+        "devices": [
+            {
+                "area_id": null,
+                "config_entries": [
+                    "df280b5f520944719d6ba3feff216fde"
+                ],
+                "connections": [],
+                "id": "a7fd70775ed44d29969817fa6bff82e8",
+                "identifiers": [
+                    [
+                        "zwave",
+                        1
+                    ]
+                ],
+                "manufacturer": "AEON Labs",
+                "model": "ZW090 Z-Stick Gen5 US",
+                "name": "AEON Labs ZW090 Z-Stick Gen5 US",
+                "name_by_user": null,
+                "sw_version": null,
+                "via_device_id": null
+            },
+            {
+                "area_id": null,
+                "config_entries": [
+                    "df280b5f520944719d6ba3feff216fde"
+                ],
+                "connections": [],
+                "id": "cb6ddec13cdd4260824e22bdccb3a333",
+                "identifiers": [
+                    [
+                        "zwave",
+                        2
+                    ]
+                ],
+                "manufacturer": "Assa Abloy",
+                "model": "Yale Push Button Deadbolt (YRD216)",
+                "name": "Assa Abloy Yale Push Button Deadbolt (YRD216)",
+                "name_by_user": null,
+                "sw_version": null,
+                "via_device_id": "a7fd70775ed44d29969817fa6bff82e8"
+            },
+            {
+                "area_id": null,
+                "config_entries": [
+                    "df280b5f520944719d6ba3feff216fde"
+                ],
+                "connections": [],
+                "id": "75d95fc8d0c2486d8969ba440303e4ef",
+                "identifiers": [
+                    [
+                        "zwave",
+                        3
+                    ]
+                ],
+                "manufacturer": "Assa Abloy",
+                "model": "Yale Push Button Deadbolt (YRD216)",
+                "name": "Assa Abloy Yale Push Button Deadbolt (YRD216)",
+                "name_by_user": null,
+                "sw_version": null,
+                "via_device_id": "a7fd70775ed44d29969817fa6bff82e8"
+            }
+        ]
+    },
+    "key": "core.device_registry",
+    "version": 1
+}

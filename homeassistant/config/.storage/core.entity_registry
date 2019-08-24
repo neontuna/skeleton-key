@@ -18,6 +18,51 @@
                 "name": null,
                 "platform": "met",
                 "unique_id": "home"
+            },
+            {
+                "config_entry_id": "df280b5f520944719d6ba3feff216fde",
+                "device_id": "a7fd70775ed44d29969817fa6bff82e8",
+                "disabled_by": null,
+                "entity_id": "zwave.aeon_labs_zw090_z_stick_gen5_us",
+                "name": null,
+                "platform": "zwave",
+                "unique_id": "node-1"
+            },
+            {
+                "config_entry_id": "df280b5f520944719d6ba3feff216fde",
+                "device_id": "75d95fc8d0c2486d8969ba440303e4ef",
+                "disabled_by": null,
+                "entity_id": "sensor.assa_abloy_yale_push_button_deadbolt_yrd216_alarm_type",
+                "name": null,
+                "platform": "zwave",
+                "unique_id": "3-72057594094305281"
+            },
+            {
+                "config_entry_id": "df280b5f520944719d6ba3feff216fde",
+                "device_id": "75d95fc8d0c2486d8969ba440303e4ef",
+                "disabled_by": null,
+                "entity_id": "sensor.assa_abloy_yale_push_button_deadbolt_yrd216_alarm_level",
+                "name": null,
+                "platform": "zwave",
+                "unique_id": "3-72057594094305297"
+            },
+            {
+                "config_entry_id": "df280b5f520944719d6ba3feff216fde",
+                "device_id": "75d95fc8d0c2486d8969ba440303e4ef",
+                "disabled_by": null,
+                "entity_id": "zwave.assa_abloy_yale_push_button_deadbolt_yrd216_2",
+                "name": null,
+                "platform": "zwave",
+                "unique_id": "node-3"
+            },
+            {
+                "config_entry_id": "df280b5f520944719d6ba3feff216fde",
+                "device_id": "75d95fc8d0c2486d8969ba440303e4ef",
+                "disabled_by": null,
+                "entity_id": "lock.assa_abloy_yale_push_button_deadbolt_yrd216_locked",
+                "name": null,
+                "platform": "zwave",
+                "unique_id": "3-72057594094059520"
             }
         ]
     },

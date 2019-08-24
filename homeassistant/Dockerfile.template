@@ -1,5 +1,5 @@
 # Base-image for python on any machine using a template variable
-FROM homeassistant/raspberrypi3-homeassistant:0.95.1
+FROM homeassistant/raspberrypi3-homeassistant:0.97.0
 
 # Copy new configuration to imported folder
 COPY config /imported
