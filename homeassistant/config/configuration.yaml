@@ -13,6 +13,3 @@ tts:
 group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
-
-http:
-  api_password: xuG2Qe9MfU8mh3ALCfuhKv
