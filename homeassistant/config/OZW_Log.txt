@@ -1,0 +1,1 @@
+2019-08-24 19:47:29.958 Always, OpenZwave Version 1.4.3440 Starting Up
