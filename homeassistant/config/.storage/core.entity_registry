@@ -18,7 +18,7 @@
                 "name": null,
                 "platform": "met",
                 "unique_id": "home"
-            },
+            }
         ]
     },
     "key": "core.entity_registry",
