@@ -16,4 +16,4 @@ script: !include scripts.yaml
 
 auth_providers:
    - type: legacy_api_password
-     api_password: '12345678'
+     api_password: ABCD
