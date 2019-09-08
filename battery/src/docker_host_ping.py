@@ -13,28 +13,32 @@ def packet_loss(interface):
         
 i = 0
 
-while True;
+def main(arg):
+    while True;
 
-    print('checking status')
+        print('checking status')
 
-    eth0_packet_loss = packet_loss('eth0')
-    wlan0_packet_loss = packet_loss('wlan0')
-    wwan0_packet_loss = packet_loss('wwan0')
-    
-    if eth0_packet_loss == None | int(eth0_packet_loss.group()) > 50
-        print('eth0 offline!')
-    else
-        print('eth0 online!')
-    
-    if wlan0_packet_loss == None | int(wlan0_packet_loss.group()) > 50
-        print('wlan0 offline!')
-    else
-        print('wlan0 online!')
-    
-    if wwan0_packet_loss == None | int(wwan0_packet_loss.group()) > 50
-        print('wwan0 offline!')
-    else
-        print('wwan0 online!')
+        eth0_packet_loss = packet_loss('eth0')
+        wlan0_packet_loss = packet_loss('wlan0')
+        wwan0_packet_loss = packet_loss('wwan0')
         
-    i = i + 1
-    sleep(1)
+        if eth0_packet_loss == None | int(eth0_packet_loss.group()) > 50:
+            print('eth0 offline!')
+        else:
+            print('eth0 online!')
+        
+        if wlan0_packet_loss == None | int(wlan0_packet_loss.group()) > 50:
+            print('wlan0 offline!')
+        else:
+            print('wlan0 online!')
+        
+        if wwan0_packet_loss == None | int(wwan0_packet_loss.group()) > 50:
+            print('wwan0 offline!')
+        else:
+            print('wwan0 online!')
+            
+        i = i + 1
+        sleep(1)
+    
+if __name__ == '__main__':
+    main()
