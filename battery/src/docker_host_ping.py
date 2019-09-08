@@ -36,7 +36,7 @@ def main():
         else:
             print('wwan0 online!')
             
-        i = i + 1
+        i += 1
         sleep(1)
     
 if __name__ == '__main__':
