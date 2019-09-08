@@ -29,7 +29,7 @@ else:
     devices = NetworkManager.NetworkManager.GetDevices()
 
     for dev in devices:
-        if dev.DeviceType == dtype and dev.State == NetworkManager.NM_DEVICE_STATE_CONNECTED:
+        if dev.DeviceType == dtype and dev.State == NetworkManager.NM_DEVICE_STATE_ACTIVATED:
             break
     else:
         print("No suitable and available %s device found" % ctype)
