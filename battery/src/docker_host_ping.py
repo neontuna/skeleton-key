@@ -10,10 +10,10 @@ def packet_loss(interface):
         return re.search("\d+(?=% packet loss)", ping_results.stdout.strip().decode())
     except subprocess.CalledProcessError:
         pass
-        
-i = 0
 
 def main():
+    i = 0
+    
     while True:
         print('checking status')
 
@@ -21,17 +21,17 @@ def main():
         wlan0_packet_loss = packet_loss('wlan0')
         wwan0_packet_loss = packet_loss('wwan0')
         
-        if eth0_packet_loss == None or eth0_packet_loss == int(eth0_packet_loss.group()) > 50:
+        if eth0_packet_loss == None or int(eth0_packet_loss.group()) > 50:
             print('eth0 offline!')
         else:
             print('eth0 online!')
         
-        if wlan0_packet_loss == None or wlan0_packet_loss == int(wlan0_packet_loss.group()) > 50:
+        if wlan0_packet_loss == None or int(wlan0_packet_loss.group()) > 50:
             print('wlan0 offline!')
         else:
             print('wlan0 online!')
         
-        if wwan0_packet_loss == None or wwan0_packet_loss == int(wwan0_packet_loss.group()) > 50:
+        if wwan0_packet_loss == None or int(wwan0_packet_loss.group()) > 50:
             print('wwan0 offline!')
         else:
             print('wwan0 online!')
