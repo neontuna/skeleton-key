@@ -12,6 +12,6 @@ while [[ true ]]; do
   #           string:"ActiveConnections"
   # sleep 10
   
-  python3 src/docker_host_ping.py
+  # python3 src/docker_host_ping.py
   sleep infinity
 done
