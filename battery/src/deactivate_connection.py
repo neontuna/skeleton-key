@@ -36,4 +36,4 @@ else:
         sys.exit(1)
 
 # And disconnect
-NetworkManager.NetworkManager.DeactivateConnection(conn, dev, "/")
+NetworkManager.NetworkManager.DeactivateConnection(dev, "/")
