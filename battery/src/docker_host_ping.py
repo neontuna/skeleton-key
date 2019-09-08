@@ -43,69 +43,57 @@ def main():
         i += 1
         sleep(30)
         
-def activate_connection(name):
+def activate_connection(names):
     connections = NetworkManager.Settings.ListConnections()
     connections = dict([(x.GetSettings()['connection']['id'], x) for x in connections])
-    conn = connections[name]
 
-    # Find a suitable device
-    ctype = conn.GetSettings()['connection']['type']
-    if ctype == 'vpn':
-        for dev in NetworkManager.NetworkManager.GetDevices():
-            if dev.State == NetworkManager.NM_DEVICE_STATE_ACTIVATED and dev.Managed:
-                break
+    if not NetworkManager.NetworkManager.NetworkingEnabled:
+        NetworkManager.NetworkManager.Enable(True)
+    for n in names:
+        if n not in connections:
+            print("No such connection: %s" % n, file=sys.stderr)
+
+        print("Activating connection '%s'" % n)
+        conn = connections[n]
+        ctype = conn.GetSettings()['connection']['type']
+        if ctype == 'vpn':
+            for dev in NetworkManager.NetworkManager.GetDevices():
+                if dev.State == NetworkManager.NM_DEVICE_STATE_ACTIVATED and dev.Managed:
+                    break
+            else:
+                print("No active, managed device found", file=sys.stderr)
         else:
-            print("No active, managed device found")
-            sys.exit(1)
-    else:
-        dtype = {
-            '802-11-wireless': NetworkManager.NM_DEVICE_TYPE_WIFI,
-            '802-3-ethernet': NetworkManager.NM_DEVICE_TYPE_ETHERNET,
-            'gsm': NetworkManager.NM_DEVICE_TYPE_MODEM,
-        }.get(ctype,ctype)
-        devices = NetworkManager.NetworkManager.GetDevices()
+            dtype = {
+                '802-11-wireless': 'wlan',
+                'gsm': 'wwan',
+            }
+            if dtype in connection_types:
+                enable(dtype)
+            dtype = {
+                '802-11-wireless': NetworkManager.NM_DEVICE_TYPE_WIFI,
+                '802-3-ethernet': NetworkManager.NM_DEVICE_TYPE_ETHERNET,
+                'gsm': NetworkManager.NM_DEVICE_TYPE_MODEM,
+            }.get(ctype,ctype)
+            devices = NetworkManager.NetworkManager.GetDevices()
 
-        for dev in devices:
-            if dev.DeviceType == dtype and dev.State == NetworkManager.NM_DEVICE_STATE_DISCONNECTED:
-                break
-        else:
-            print("No suitable and available %s device found" % ctype)
-            sys.exit(1)
+            for dev in devices:
+                if dev.DeviceType == dtype and dev.State == NetworkManager.NM_DEVICE_STATE_DISCONNECTED:
+                    break
+            else:
+                print("No suitable and available %s device found" % ctype, file=sys.stderr)
 
-    # And connect
-    NetworkManager.NetworkManager.ActivateConnection(conn, dev, "/")
-    
-def deactivate_connection(name):
-    connections = NetworkManager.Settings.ListConnections()
-    connections = dict([(x.GetSettings()['connection']['id'], x) for x in connections])
-    conn = connections[name]
+        NetworkManager.NetworkManager.ActivateConnection(conn, dev, "/")
 
-    # Find a suitable device
-    ctype = conn.GetSettings()['connection']['type']
-    if ctype == 'vpn':
-        for dev in NetworkManager.NetworkManager.GetDevices():
-            if dev.State == NetworkManager.NM_DEVICE_STATE_ACTIVATED and dev.Managed:
-                break
-        else:
-            print("No active, managed device found")
-            sys.exit(1)
-    else:
-        dtype = {
-            '802-11-wireless': NetworkManager.NM_DEVICE_TYPE_WIFI,
-            '802-3-ethernet': NetworkManager.NM_DEVICE_TYPE_ETHERNET,
-            'gsm': NetworkManager.NM_DEVICE_TYPE_MODEM,
-        }.get(ctype,ctype)
-        devices = NetworkManager.NetworkManager.GetDevices()
+def deactivate_connection(names):
+    active = NetworkManager.NetworkManager.ActiveConnections
+    active = dict([(x.Connection.GetSettings()['connection']['id'], x) for x in active])
 
-        for dev in devices:
-            if dev.DeviceType == dtype and dev.State == NetworkManager.NM_DEVICE_STATE_ACTIVATED:
-                break
-        else:
-            print("No suitable and available %s device found" % ctype)
-            sys.exit(1)
+    for n in names:
+        if n not in active:
+            print("No such connection: %s" % n, file=sys.stderr)
 
-    # And disconnect
-    NetworkManager.NetworkManager.DeactivateConnection(dev, "/")
+        print("Deactivating connection '%s'" % n)
+        NetworkManager.NetworkManager.DeactivateConnection(active[n])
     
 if __name__ == '__main__':
     main()
