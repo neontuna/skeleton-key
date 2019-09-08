@@ -35,15 +35,16 @@ def main():
         
         if eth0_online == False and wlan0_online == False and wwan0_online == False:
             print("Failing over to cellular backup")
-            activate_connection('cellular')
+            activate_connection(['cellular'])
         elif wwan0_online == True and eth0_online == True or wlan0_online == True:
             print("Main connection online, disabling cellular backup")
-            deactivate_connection('cellular')
+            deactivate_connection(['cellular'])
             
         i += 1
         sleep(30)
         
 def activate_connection(names):
+    connection_types = ['wireless','wwan','wimax']
     connections = NetworkManager.Settings.ListConnections()
     connections = dict([(x.GetSettings()['connection']['id'], x) for x in connections])
 
