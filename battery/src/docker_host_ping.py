@@ -15,6 +15,8 @@ i = 0
 
 while True;
 
+    print('checking status')
+
     eth0_packet_loss = packet_loss('eth0')
     wlan0_packet_loss = packet_loss('wlan0')
     wwan0_packet_loss = packet_loss('wwan0')
