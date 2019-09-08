@@ -26,4 +26,6 @@ services:
     build: ./battery
     privileged: true
     labels: 
+      io.balena.features.supervisor-api: '1'
       io.balena.features.balena-api: '1'
+      io.balena.features.dbus: '1'
