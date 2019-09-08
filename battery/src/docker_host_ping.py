@@ -36,7 +36,7 @@ def main():
         if eth0_online == False and wlan0_online == False and wwan0_online == False:
             print("Failing over to cellular backup")
             activate_connection('cellular')
-        elif wwan0_online == True and eth0_online == True or wlan0_online == True
+        elif wwan0_online == True and eth0_online == True or wlan0_online == True:
             print("Main connection online, disabling cellular backup")
             deactivate_connection('cellular')
             
