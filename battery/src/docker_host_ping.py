@@ -31,7 +31,6 @@ def main():
         wwan0_online = wwan0_packet_loss != None and int(wwan0_packet_loss.group()) < 50
         
         print("eth0: {0}, wlan0: {1}, wwan0: {2}".format(eth0_online, wlan0_online, wwan0_online))
-        print("...")
         
         if eth0_online == False and wlan0_online == False and wwan0_online == False:
             print("Failing over to cellular backup")
@@ -40,6 +39,7 @@ def main():
             print("Main connection online, disabling cellular backup")
             deactivate_connection(['cellular'])
             
+        print("...")
         i += 1
         sleep(30)
         
