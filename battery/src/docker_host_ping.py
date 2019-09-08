@@ -13,6 +13,9 @@ def packet_loss(interface):
 
 def main():
     i = 0
+    eth0_online = False
+    wlan0_online = False
+    wwan0_online = False
     
     while True:
         print('checking status')
@@ -21,20 +24,12 @@ def main():
         wlan0_packet_loss = packet_loss('wlan0')
         wwan0_packet_loss = packet_loss('wwan0')
         
-        if eth0_packet_loss == None or int(eth0_packet_loss.group()) > 50:
-            print('eth0 offline!')
-        else:
-            print('eth0 online!')
+        eth0_online = eth0_packet_loss != None and int(eth0_packet_loss.group()) < 50
+        wlan0_online = wlan0_packet_loss != None and int(wlan0_packet_loss.group()) < 50
+        wwan0_online = wwan0_packet_loss != None and int(wwan0_packet_loss.group()) < 50
         
-        if wlan0_packet_loss == None or int(wlan0_packet_loss.group()) > 50:
-            print('wlan0 offline!')
-        else:
-            print('wlan0 online!')
-        
-        if wwan0_packet_loss == None or int(wwan0_packet_loss.group()) > 50:
-            print('wwan0 offline!')
-        else:
-            print('wwan0 online!')
+        print("eth0: {0}, wlan0: {1}, wwan0: {2}".format(eth0_online, wlan0_online, wwan0_online))
+        print("...")
             
         i += 1
         sleep(1)
