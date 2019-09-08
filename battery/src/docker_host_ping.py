@@ -1,5 +1,6 @@
 from time import sleep
 import subprocess
+import re
         
 def packet_loss(interface):
     try:
