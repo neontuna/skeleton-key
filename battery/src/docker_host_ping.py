@@ -13,9 +13,8 @@ def packet_loss(interface):
         
 i = 0
 
-def main(arg):
-    while True;
-
+def main():
+    while True:
         print('checking status')
 
         eth0_packet_loss = packet_loss('eth0')
