@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 export DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
+export DOCKER_HOST_IP=$(route -n | awk '/UG[ \t]/{print $2}')
 
 while [[ true ]]; do
   # dbus-send --system --print-reply \
