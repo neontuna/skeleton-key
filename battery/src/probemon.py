@@ -3,7 +3,7 @@
 # of the Python interpreter. Next, import the Scapy functions:
 import json
 import requests
-import asyncio
+import threading
 from time import sleep
 from scapy.all import *
 
@@ -17,13 +17,13 @@ def sniffmgmt(p):
                 print(p.addr2)
                 observedclients.append(p.addr2)
 
-async def get_sniffer_results():
+def get_sniffer_results():
 	interface = "wlan1mon"
 	observedclients = []
 
 	session = AsyncSniffer(iface=interface, prn=sniffmgmt, store=False)
 	session.start()
-	await asyncio.sleep(60)
+	sleep(60)
 	session.stop()
 	
 	post_results()
@@ -34,6 +34,5 @@ def post_results():
 	requests.post(url, json=data)
 
 def main():
-	loop = asyncio.new_event_loop()
-	asyncio.set_event_loop(loop)
-	loop.run_until_complete(get_sniffer_results())
+	thread = threading.Thread(target=get_sniffer_results)
+    thread.start()
