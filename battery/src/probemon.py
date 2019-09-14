@@ -4,6 +4,8 @@
 from time import sleep
 from scapy.all import *
 
+observedclients = []
+
 def sniffmgmt(p):
     stamgmtstypes = (0, 2, 4)
     if p.haslayer(Dot11FCS):
