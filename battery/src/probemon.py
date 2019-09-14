@@ -45,7 +45,7 @@ def build_packet_callback(time_fmt, logger, delimiter, mac_info, ssid, rssi):
 			try:
 				parsed_mac = netaddr.EUI(packet.addr2)
 				fields.append(parsed_mac.oui.registration().org)
-			except netaddr.core.NotRegisteredError, e:
+			except netaddr.core.NotRegisteredError as e:
 				fields.append('UNKNOWN')
 
 		# include the SSID in the probe frame
