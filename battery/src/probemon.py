@@ -14,7 +14,6 @@ def sniffmgmt(p):
     if p.haslayer(Dot11FCS):
         if p.type == 0 and p.subtype in stamgmtstypes:
             if p.addr2 not in observedclients:
-                print(p.addr2)
                 observedclients.append(p.addr2)
 
 def get_sniffer_results():
@@ -29,7 +28,7 @@ def get_sniffer_results():
 	post_results()
 	
 def post_results():
-	url = 'http://34df0a2c.ngrok.io/webhooks/wifi_sniffer'
+	url = 'http://rabbu-testing.ngrok.io/webhooks/wifi_sniffer'
 	data = {"clients" : observedclients}
 	requests.post(url, json=data)
 
