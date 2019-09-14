@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # The previous line ensures that this script is run under the context
 # of the Python interpreter. Next, import the Scapy functions:
+from time import sleep
 from scapy.all import *
 # Define the interface name that we will be sniffing from, you can
 # change this if needed.
@@ -31,4 +32,8 @@ def sniffmgmt(p):
 # With the sniffmgmt() function complete, we can invoke the Scapy sniff()
 # function, pointing to the monitor mode interface, and telling Scapy to call
 # the sniffmgmt() function for each packet received. Easy!
-sniff(iface=interface, prn=sniffmgmt)
+# sniff(iface=interface, prn=sniffmgmt)
+session = AsyncSniffer(iface=interface, prn=sniffmgmt, store=False)
+session.start()
+time.sleep(60)
+session.stop()
