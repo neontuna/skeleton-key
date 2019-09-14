@@ -4,7 +4,7 @@
 from scapy.all import *
 # Define the interface name that we will be sniffing from, you can
 # change this if needed.
-interface = "mon0"
+interface = "wlan1mon"
 # Next, declare a Python list to keep track of client MAC addresses
 # that we have already seen so we only print the address once per client.
 observedclients = []
