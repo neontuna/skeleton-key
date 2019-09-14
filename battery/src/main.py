@@ -1,9 +1,6 @@
 from time import sleep
-from subprocess import PIPE
-import subprocess
-import re
+import sys, os, re, subprocess
 import NetworkManager
-import sys
 import probemon
         
 def packet_loss(interface):
@@ -31,9 +28,9 @@ def main():
         wlan0_online = wlan0_packet_loss != None and int(wlan0_packet_loss.group()) < 50
         wwan0_online = wwan0_packet_loss != None and int(wwan0_packet_loss.group()) < 50
         
-        print("eth0: {0}, wlan0: {1}, wwan0: {2}".format(eth0_online, wlan0_online, wwan0_online))
+        print("wlan0: {0}, wwan0: {1}".format(wlan0_online, wwan0_online))
         
-        if wlan0_online == False and wwan0_online == False and os.environ['CELLULAR_FAILOVER_ENABLED'] == True:
+        if wlan0_online == False and wwan0_online == False and os.environ['CELLULAR_FAILOVER'] == 'enabled':
             print("Failing over to cellular backup")
             activate_connection(['cellular'])
         elif wlan0_online == True and wwan0_online == True:
@@ -41,9 +38,10 @@ def main():
             deactivate_connection(['cellular'])
             
         if(i%300==0):
+            print("Checking for wireless clients")
             probemon.main()
         
-        print("...")
+        print(i)
         i += 30
         sleep(30)
         
