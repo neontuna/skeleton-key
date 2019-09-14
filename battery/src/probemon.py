@@ -16,8 +16,7 @@ def sniffmgmt(p):
     # subtypes sent exclusively by clients. I got this list from Wireshark.
     stamgmtstypes = (0, 2, 4)
     # Make sure the packet has the Scapy Dot11 layer present
-    if p.haslayer(Dot11):
-        print(p.addr2)
+    if p.haslayer(Dot11FCS):
         # Check to make sure this is a management frame (type=0) and that
         # the subtype is one of our management frame subtypes indicating a
         # a wireless client
