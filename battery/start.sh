@@ -16,12 +16,12 @@ else
 fi
 
 # get wlan1 ready for monitor mode
-airmon-ng start wlan1
+# airmon-ng start wlan1
 
-while [[ true ]]; do
-  python3 src/main.py & # start initial python instance but return and continue
-  PID1=$!
-  
-  wait $PID1
-  echo 'Monitor script stopped, restarting . . .'
-done
+# while [[ true ]]; do
+#   python3 src/main.py & # start initial python instance but return and continue
+#   PID1=$!
+# 
+#   wait $PID1
+#   echo 'Monitor script stopped, restarting . . .'
+# done
