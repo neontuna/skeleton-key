@@ -17,7 +17,6 @@ def sniffmgmt(p):
                 print(p.addr2)
                 observedclients.append(p.addr2)
 
-@async_to_sync
 async def get_sniffer_results():
 	interface = "wlan1mon"
 	observedclients = []
@@ -35,4 +34,7 @@ def post_results():
 	requests.post(url, json=data)
 
 def main():
-	get_sniffer_results()
+	loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(get_sniffer_results())
+	
