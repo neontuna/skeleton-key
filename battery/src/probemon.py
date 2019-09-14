@@ -35,4 +35,4 @@ def post_results():
 
 def main():
 	thread = threading.Thread(target=get_sniffer_results)
-    thread.start()
+	thread.start()
