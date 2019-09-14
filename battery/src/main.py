@@ -1,110 +1,104 @@
 from time import sleep
-import datetime
-import sys, getopt, os
-sys.path.append('/usr/lib/python3.5/dist-packages') # temporary hack to import the piJuice module
-from pijuice import PiJuice
-from balena import Balena
-from twilio.rest import Client
+from subprocess import PIPE
+import subprocess
+import re
+import NetworkManager
+import sys
+import probemon
+        
+def packet_loss(interface):
+    try:
+        cmd = "ping -w 5 -I {0} 8.8.8.8".format(interface)
+        ping_results = subprocess.run(cmd, shell=True, stdout=PIPE, stderr=PIPE)
+        return re.search("\d+(?=% packet loss)", ping_results.stdout.strip().decode())
+    except subprocess.CalledProcessError:
+        pass
 
-# Start the SDK
-balena = Balena()
-balena.auth.login_with_token(os.environ['BALENA_API_KEY'])
-
-# Wait for device I2C device to start
-while not os.path.exists('/dev/i2c-1'):
-    print ("Waiting to identify PiJuice")
-    time.sleep(0.1)
-
-# Initiate PiJuice
-pijuice = PiJuice(1,0x14)
-
-# Get all parameters and return as a dictionary
-def get_battery_paremeters(pijuice):
+def main():
+    i = 0
+    eth0_online = False
+    wlan0_online = False
+    wwan0_online = False
     
-    juice = {}
+    while True:
+        print('checking status')
 
-    charge = pijuice.status.GetChargeLevel()		
-    juice['charge'] = charge['data'] if charge['error'] == 'NO_ERROR' else charge['error']
+        # eth0_packet_loss = packet_loss('eth0')
+        wlan0_packet_loss = packet_loss('wlan0')
+        wwan0_packet_loss = packet_loss('wwan0')
+        
+        # eth0_online = eth0_packet_loss != None and int(eth0_packet_loss.group()) < 50
+        wlan0_online = wlan0_packet_loss != None and int(wlan0_packet_loss.group()) < 50
+        wwan0_online = wwan0_packet_loss != None and int(wwan0_packet_loss.group()) < 50
+        
+        print("eth0: {0}, wlan0: {1}, wwan0: {2}".format(eth0_online, wlan0_online, wwan0_online))
+        
+        if wlan0_online == False and wwan0_online == False and os.environ['CELLULAR_FAILOVER_ENABLED'] == True:
+            print("Failing over to cellular backup")
+            activate_connection(['cellular'])
+        elif wlan0_online == True and wwan0_online == True:
+            print("Main connection online, disabling cellular backup")
+            deactivate_connection(['cellular'])
+            
+        if(i%300==0):
+            probemon.main()
+        
+        print("...")
+        i += 30
+        sleep(30)
+        
+def activate_connection(names):
+    connection_types = ['wireless','wwan','wimax']
+    connections = NetworkManager.Settings.ListConnections()
+    connections = dict([(x.GetSettings()['connection']['id'], x) for x in connections])
 
-    # Temperature [C]
-    temperature =  pijuice.status.GetBatteryTemperature()
-    juice['temperature'] = temperature['data'] if temperature['error'] == 'NO_ERROR' else temperature['error']
+    if not NetworkManager.NetworkManager.NetworkingEnabled:
+        NetworkManager.NetworkManager.Enable(True)
+    for n in names:
+        if n not in connections:
+            print("No such connection: %s" % n, file=sys.stderr)
 
-    # Battery voltage  [V]
-    vbat = pijuice.status.GetBatteryVoltage()	        
-    juice['vbat'] = vbat['data']/1000 if vbat['error'] == 'NO_ERROR' else vbat['error'] 
+        print("Activating connection '%s'" % n)
+        conn = connections[n]
+        ctype = conn.GetSettings()['connection']['type']
+        if ctype == 'vpn':
+            for dev in NetworkManager.NetworkManager.GetDevices():
+                if dev.State == NetworkManager.NM_DEVICE_STATE_ACTIVATED and dev.Managed:
+                    break
+            else:
+                print("No active, managed device found", file=sys.stderr)
+        else:
+            dtype = {
+                '802-11-wireless': 'wlan',
+                'gsm': 'wwan',
+            }
+            if dtype in connection_types:
+                enable(dtype)
+            dtype = {
+                '802-11-wireless': NetworkManager.NM_DEVICE_TYPE_WIFI,
+                '802-3-ethernet': NetworkManager.NM_DEVICE_TYPE_ETHERNET,
+                'gsm': NetworkManager.NM_DEVICE_TYPE_MODEM,
+            }.get(ctype,ctype)
+            devices = NetworkManager.NetworkManager.GetDevices()
 
-    # Barrery current [A]
-    ibat = pijuice.status.GetBatteryCurrent()
-    juice['ibat'] = ibat['data']/1000 if ibat['error'] == 'NO_ERROR' else ibat['error']
+            for dev in devices:
+                if dev.DeviceType == dtype and dev.State == NetworkManager.NM_DEVICE_STATE_DISCONNECTED:
+                    break
+            else:
+                print("No suitable and available %s device found" % ctype, file=sys.stderr)
 
-    # I/O coltage [V]
-    vio =  pijuice.status.GetIoVoltage()
-    juice['vio'] = vio['data']/1000 if vio['error'] == 'NO_ERROR' else vio['error']
+        NetworkManager.NetworkManager.ActivateConnection(conn, dev, "/")
 
-    # I/O current [A]
-    iio = pijuice.status.GetIoCurrent()
-    juice['iio'] = iio['data']/1000 if iio['error'] == 'NO_ERROR' else iio['error'] 
+def deactivate_connection(names):
+    active = NetworkManager.NetworkManager.ActiveConnections
+    active = dict([(x.Connection.GetSettings()['connection']['id'], x) for x in active])
 
-    # Get power input (if power connected to the PiJuice board)
-    status = pijuice.status.GetStatus()
-    juice['power_input'] = status['data']['powerInput'] if status['error'] == 'NO_ERROR' else status['error'] 
+    for n in names:
+        if n not in active:
+            print("No such connection: %s" % n, file=sys.stderr)
 
-    # Get power input (if power connected to the Raspberry Pi board)
-    status = pijuice.status.GetStatus()
-    juice['power_input_board'] = status['data']['powerInput5vIo'] if status['error'] == 'NO_ERROR' else status['error'] 
-
-    return juice
-
-def update_tag(tag, variable):
-    # update device tags
-    balena.models.tag.device.set(os.environ['BALENA_DEVICE_UUID'], str(tag), str(variable))
-
-def send_sms(to_number, from_number, message, client):
-    msg = client.messages.create(to=twilio_number, from_=twilio_from_number,body=message)
-    print(msg.sid)
-
-# Change start tag
-start_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-update_tag("START_TIME", start_time)
-
-# ======================[ TWILIO CODE ]================================
-# The idea here is to send user one message every hour in case a device 
-if( os.environ['TWILIO_SID'] and os.environ['TWILIO_TOKEN'] and os.environ['TWILIO_NUMBER'] and os.environ['TWILIO_FROM_NUMBER']):
-    twilio_sid = os.environ['TWILIO_SID']
-    twilio_token = os.environ['TWILIO_TOKEN']
-    twilio_number = os.environ['TWILIO_NUMBER']
-    twilio_from_number = os.environ['TWILIO_FROM_NUMBER']
-
-    # Initiate twilio client
-    client = Client(twilio_sid, twilio_token)
-    twillio_active = True
-    twillio_last_message = datetime.datetime.now()
-# =====================================================================
-
-# Initial variables
-i = 0
-
-while True:
+        print("Deactivating connection '%s'" % n)
+        NetworkManager.NetworkManager.DeactivateConnection(active[n])
     
-    #Read battery data
-    battery_data = get_battery_paremeters(pijuice)
-    # Uncomment the line to display battery status on long
-    # print(battery_data)
-
-    # Case power is disconnedted, send twilio text message if twilio alarm is set to true
-    if (os.environ['TWILIO_ALARM'].lower() == "true" and battery_data['power_input'] == "NOT_PRESENT" and battery_data['power_input_board'] == "NOT_PRESENT"):
-        # check if last message was over one hour from the last message 
-        time_difference = (datetime.datetime.now() - twillio_last_message ).total_seconds() / 3600
-        if(time_difference >= 1):
-            send_sms(twilio_number, twilio_from_number,"Your device just lost power...", client)
-            twillio_last_message = datetime.datetime.now()
-
-    # Change tags every minute
-    if(i%12==0):
-        # Update tags
-        for key, value in battery_data.items():
-            update_tag(key, value)
-
-    i = i + 1
-    sleep(5)
+if __name__ == '__main__':
+    main()

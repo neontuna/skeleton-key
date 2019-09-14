@@ -1,17 +1,28 @@
 #!/usr/bin/env bash
 
 export DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
-export DOCKER_HOST_IP=$(route -n | awk '/UG[ \t]/{print $2}')
 
 while [[ true ]]; do
-  # dbus-send --system --print-reply \
-  #           --dest=org.freedesktop.NetworkManager \
-  #           /org/freedesktop/NetworkManager \
-  #           org.freedesktop.DBus.Properties.Get \
-  #           string:"org.freedesktop.NetworkManager" \
-  #           string:"ActiveConnections"
-  # sleep 10
+  python3 src/main.py & # start initial python instance but return and continue
+  PID1=$!
   
-  # python3 src/docker_host_ping.py
-  sleep infinity
+  # give pi a few seconds to finish boot and connect to wifi
+  sleep 10
+  
+  # check for active wifi connection
+  iwgetid -r
+  
+  if [ $? -eq 0 ]; then
+      printf 'Skipping WiFi Connect\n'
+  else
+      printf 'Starting WiFi Connect\n'
+      ./wifi-connect -a 600
+  fi
+  
+  # get wlan1 ready for monitor mode
+  airmon-ng check kill
+  airmon-ng start wlan1
+  
+  wait $PID1
+  echo 'Monitor script stopped, restarting . . .'
 done
