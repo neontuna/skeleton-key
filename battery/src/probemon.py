@@ -35,6 +35,5 @@ def post_results():
 
 def main():
 	loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(get_sniffer_results())
-	
+	asyncio.set_event_loop(loop)
+	loop.run_until_complete(get_sniffer_results())
