@@ -17,6 +17,7 @@ def sniffmgmt(p):
                 print(p.addr2)
                 observedclients.append(p.addr2)
 
+@async_to_sync
 async def get_sniffer_results():
 	interface = "wlan1mon"
 	observedclients = []
@@ -29,6 +30,9 @@ async def get_sniffer_results():
 	post_results()
 	
 def post_results():
-	url = 'http://rabbu-foundation-development.ngrok.io/webhooks/wifi_sniffer'
+	url = 'http://34df0a2c.ngrok.io/webhooks/wifi_sniffer'
 	data = {"clients" : observedclients}
 	requests.post(url, json=data)
+
+def main():
+	get_sniffer_results()
