@@ -2,7 +2,8 @@
 # see more about dockerfile templates here: https://www.balena.io/docs/learn/develop/dockerfile/
 FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3-stretch-build
 
-RUN install_packages pijuice-base jq curl dbus
+RUN install_packages pijuice-base jq curl dbus bluetooth dbus bluez libbluetooth-dev libudev-
+python-bluetooth 
 
 # Set our working directory
 WORKDIR /usr/src/app

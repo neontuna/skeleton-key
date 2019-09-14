@@ -24,6 +24,7 @@ services:
   # 
   battery:
     build: ./battery
+    network_mode: host
     privileged: true
     labels: 
       io.balena.features.supervisor-api: '1'

@@ -1,3 +1,5 @@
 balena-sdk==7.1.0
 twilio==6.24.1
 python-networkmanager==2.0.1
+pybluez
+gattlib
