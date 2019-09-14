@@ -15,6 +15,8 @@ else
     ./wifi-connect -a 600
 fi
 
+sleep infinity
+
 # get wlan1 ready for monitor mode
 # airmon-ng start wlan1
 
