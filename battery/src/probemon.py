@@ -1,96 +1,34 @@
-#!/usr/bin/python
-
-import time
-import datetime
-import argparse
-import netaddr
-import sys
-import logging
+#!/usr/bin/env python
+# The previous line ensures that this script is run under the context
+# of the Python interpreter. Next, import the Scapy functions:
 from scapy.all import *
-from pprint import pprint
-from logging.handlers import RotatingFileHandler
-
-
-NAME = 'probemon'
-DESCRIPTION = "a command line tool for logging 802.11 probe request frames"
-
-DEBUG = False
-
-def build_packet_callback(time_fmt, logger, delimiter, mac_info, ssid, rssi):
-	def packet_callback(packet):
-		
-		if not packet.haslayer(Dot11):
-			return
-
-		# we are looking for management frames with a probe subtype
-		# if neither match we are done here
-		if packet.type != 0 or packet.subtype != 0x04:
-			return
-
-		# list of output fields
-		fields = []
-
-		# determine preferred time format 
-		log_time = str(int(time.time()))
-		if time_fmt == 'iso':
-			log_time = datetime.datetime.now().isoformat()
-
-		fields.append(log_time)
-
-		# append the mac address itself
-		fields.append(packet.addr2)
-
-		# parse mac address and look up the organization from the vendor octets
-		if mac_info:
-			try:
-				parsed_mac = netaddr.EUI(packet.addr2)
-				fields.append(parsed_mac.oui.registration().org)
-			except netaddr.core.NotRegisteredError as e:
-				fields.append('UNKNOWN')
-
-		# include the SSID in the probe frame
-		if ssid:
-			fields.append(packet.info)
-			
-		if rssi:
-			rssi_val = -(256-ord(packet.notdecoded[-4:-3]))
-			fields.append(str(rssi_val))
-
-		logger.info(delimiter.join(fields))
-
-	return packet_callback
-
-def main():
-	parser = argparse.ArgumentParser(description=DESCRIPTION)
-	parser.add_argument('-i', '--interface', help="capture interface")
-	parser.add_argument('-t', '--time', default='iso', help="output time format (unix, iso)")
-	parser.add_argument('-o', '--output', default='probemon.log', help="logging output location")
-	parser.add_argument('-b', '--max-bytes', default=5000000, help="maximum log size in bytes before rotating")
-	parser.add_argument('-c', '--max-backups', default=99999, help="maximum number of log files to keep")
-	parser.add_argument('-d', '--delimiter', default='\t', help="output field delimiter")
-	parser.add_argument('-f', '--mac-info', action='store_true', help="include MAC address manufacturer")
-	parser.add_argument('-s', '--ssid', action='store_true', help="include probe SSID in output")
-	parser.add_argument('-r', '--rssi', action='store_true', help="include rssi in output")
-	parser.add_argument('-D', '--debug', action='store_true', help="enable debug output")
-	parser.add_argument('-l', '--log', action='store_true', help="enable scrolling live view of the logfile")
-	args = parser.parse_args()
-
-	if not args.interface:
-		print "error: capture interface not given, try --help"
-		sys.exit(-1)
-	
-	DEBUG = args.debug
-
-	# setup our rotating logger
-	logger = logging.getLogger(NAME)
-	logger.setLevel(logging.INFO)
-	handler = RotatingFileHandler(args.output, maxBytes=args.max_bytes, backupCount=args.max_backups)
-	logger.addHandler(handler)
-	if args.log:
-		logger.addHandler(logging.StreamHandler(sys.stdout))
-	built_packet_cb = build_packet_callback(args.time, logger, 
-		args.delimiter, args.mac_info, args.ssid, args.rssi)
-	sniff(iface=args.interface, prn=built_packet_cb, store=0)
-
-if __name__ == '__main__':
-	main()
+# Define the interface name that we will be sniffing from, you can
+# change this if needed.
+interface = "mon0"
+# Next, declare a Python list to keep track of client MAC addresses
+# that we have already seen so we only print the address once per client.
+observedclients = []
+# The sniffmgmt() function is called each time Scapy receives a packet
+# (we'll tell Scapy to use this function below with the sniff() function).
+# The packet that was sniffed is passed as the function argument, "p".
+def sniffmgmt(p):
+    # Define our tuple (an immutable list) of the 3 management frame
+    # subtypes sent exclusively by clients. I got this list from Wireshark.
+    stamgmtstypes = (0, 2, 4)
+    # Make sure the packet has the Scapy Dot11 layer present
+    if p.haslayer(Dot11):
+        # Check to make sure this is a management frame (type=0) and that
+        # the subtype is one of our management frame subtypes indicating a
+        # a wireless client
+        if p.type == 0 and p.subtype in stamgmtstypes:
+            # We only want to print the MAC address of the client if it
+            # hasn't already been observed. Check our list and if the
+            # client address isn't present, print the address and then add
+            # it to our list.
+            if p.addr2 not in observedclients:
+                print p.addr2
+                observedclients.append(p.addr2)
+# With the sniffmgmt() function complete, we can invoke the Scapy sniff()
+# function, pointing to the monitor mode interface, and telling Scapy to call
+# the sniffmgmt() function for each packet received. Easy!
+sniff(iface=interface, prn=sniffmgmt)
