@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # The previous line ensures that this script is run under the context
 # of the Python interpreter. Next, import the Scapy functions:
+import json
+import requests
+import asyncio
 from time import sleep
 from scapy.all import *
 
@@ -14,16 +17,18 @@ def sniffmgmt(p):
                 print(p.addr2)
                 observedclients.append(p.addr2)
 
-def get_sniffer_results():
+async def get_sniffer_results():
 	interface = "wlan1mon"
 	observedclients = []
 
 	session = AsyncSniffer(iface=interface, prn=sniffmgmt, store=False)
 	session.start()
-	time.sleep(60)
+	await asyncio.sleep(60)
 	session.stop()
 	
-	return observedclients
+	post_results()
 	
-def post_results(arg):
-	pass
+def post_results():
+	url = 'http://rabbu-foundation-development.ngrok.io/webhooks/wifi_sniffer'
+	data = {"clients" : observedclients}
+	requests.post(url, json=data)
