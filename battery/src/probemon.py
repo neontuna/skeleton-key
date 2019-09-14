@@ -26,7 +26,7 @@ def sniffmgmt(p):
             # client address isn't present, print the address and then add
             # it to our list.
             if p.addr2 not in observedclients:
-                print p.addr2
+                print(p.addr2)
                 observedclients.append(p.addr2)
 # With the sniffmgmt() function complete, we can invoke the Scapy sniff()
 # function, pointing to the monitor mode interface, and telling Scapy to call
