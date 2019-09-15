@@ -1,6 +1,6 @@
 FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3.7-stretch-build
 
-RUN install_packages pijuice-base jq curl dbus aircrack-ng dnsmasq wireless-tools
+RUN install_packages pijuice-base jq curl dbus aircrack-ng dnsmasq wireless-tools modemmanager
 
 WORKDIR /usr/src/app
 
@@ -17,5 +17,8 @@ COPY . ./
 
 ENV UDEV=1
 ENV INITSYSTEM on
+
+RUN systemctl disable ModemManager
+RUN systemctl mask ModemManager
 
 CMD ["bash", "start.sh"]
