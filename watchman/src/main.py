@@ -2,7 +2,7 @@ from time import sleep
 from subprocess import PIPE
 import sys, os, re, subprocess
 import NetworkManager
-import probemon
+# import probemon
         
 def packet_loss(interface):
     try:
@@ -38,9 +38,9 @@ def main():
             print("Main connection online, disabling cellular backup")
             deactivate_connection(['cellular'])
             
-        if(i%300==0):
-            print("Checking for wireless clients")
-            probemon.main()
+        # if(i%300==0):
+        #     print("Checking for wireless clients")
+        #     probemon.main()
         
         print(i)
         i += 30

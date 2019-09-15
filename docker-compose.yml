@@ -22,8 +22,8 @@ services:
   #   ports: 
   #     - 8123:8123
   # 
-  battery:
-    build: ./battery
+  watchman:
+    build: ./watchman
     network_mode: host
     privileged: true
     labels: 
