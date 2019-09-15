@@ -19,7 +19,7 @@ def main():
     wwan0_online = False
     
     while True:
-        print('checking status')
+        print('Checking Internet status')
 
         # eth0_packet_loss = packet_loss('eth0')
         wlan0_packet_loss = packet_loss('wlan0')
