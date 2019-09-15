@@ -46,6 +46,20 @@ def main():
         i += 30
         sleep(30)
         
+def get_wifi_info():
+    stats = []
+    for ap in NetworkManager.AccessPoint.all():
+        try:
+            stats = [ap.Ssid, ap.Strength]
+        except NetworkManager.ObjectVanished:
+            pass
+    return stats
+            
+def get_cellular_info():
+    cmd = subprocess.run("mmcli -m 0 --simple-status | awk '/signal quality/||/state/ {print $4}'", shell=True, stdout=PIPE, stderr=PIPE)
+    output = cmd.stdout.strip().decode().replace("'", "")
+    return [y for y in (x.strip() for x in output.splitlines()) if y]
+        
 def activate_connection(names):
     connection_types = ['wireless','wwan','wimax']
     connections = NetworkManager.Settings.ListConnections()
