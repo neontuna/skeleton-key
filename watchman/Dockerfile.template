@@ -18,7 +18,4 @@ COPY . ./
 ENV UDEV=1
 ENV INITSYSTEM on
 
-RUN systemctl disable ModemManager
-RUN systemctl mask ModemManager
-
 CMD ["bash", "start.sh"]
