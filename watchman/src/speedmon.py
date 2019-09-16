@@ -14,7 +14,7 @@ def get_speedtest_results():
     s.get_best_server()
     s.download(threads=None)
     print(s.results.dict())
-    update_tag('download_speed', s.results.download_speed)
+    update_tag('download_speed', s.results.download)
     update_tag('ping', s.results.ping)
     pass
 
