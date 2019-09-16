@@ -1,4 +1,5 @@
 import speedtest
+import threading
 import sys, getopt, os
 from balena import Balena
 
