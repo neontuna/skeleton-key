@@ -11,5 +11,5 @@ def get_speedtest_results():
 
 def main():
     thread = threading.Thread(target=get_speedtest_results)
-	thread.start()
+    thread.start()
     pass
