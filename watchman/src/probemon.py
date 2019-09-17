@@ -17,7 +17,7 @@ def sniffmgmt(p):
                 observedclients.append(p.addr2)
 
 def get_sniffer_results():
-	interface = "wlan1mon"
+	interface = "wextmon"
 	observedclients = []
 
 	session = AsyncSniffer(iface=interface, prn=sniffmgmt, store=False)
