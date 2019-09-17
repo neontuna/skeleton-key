@@ -20,7 +20,7 @@ services:
   #   privileged: true
   #   restart: always
   #   ports: 
-  #     - 8123:8123
+  #     - 80:8123
   # 
   watchman:
     build: ./watchman
