@@ -5,6 +5,7 @@ import sys, os, re, subprocess, getopt
 import NetworkManager
 import probemon
 import speedmon
+import batterymon
 
 balena = Balena()
 balena.auth.login_with_token(os.environ['BALENA_API_KEY'])
@@ -48,10 +49,11 @@ def main():
             probemon.main()
             
         if(i%3600==0) and wint_online == True:
-            print("Running speed test, checking wifi and cellular state")
+            print("Running speed test, checking battery, wifi and cellular state")
             speedmon.main()
             get_wifi_info()
             get_cellular_info()
+            batterymon.update_battery_tags()
         
         print(i)
         i += 30
