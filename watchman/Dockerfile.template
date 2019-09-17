@@ -1,6 +1,6 @@
 FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3.7-stretch-build
 
-RUN install_packages pijuice-base jq curl dbus aircrack-ng dnsmasq wireless-tools modemmanager
+RUN install_packages pijuice-base jq curl dbus aircrack-ng dnsmasq wireless-tools modemmanager python3-smbus
 
 WORKDIR /usr/src/app
 
