@@ -1,9 +1,13 @@
 from time import sleep
 from subprocess import PIPE
-import sys, os, re, subprocess
+from balena import Balena
+import sys, os, re, subprocess, getopt
 import NetworkManager
 import probemon
 import speedmon
+
+balena = Balena()
+balena.auth.login_with_token(os.environ['BALENA_API_KEY'])
         
 def packet_loss(interface):
     try:
@@ -44,26 +48,32 @@ def main():
             probemon.main()
             
         if(i%3600==0) and wint_online == True:
-            print("Running speed test")
+            print("Running speed test, checking wifi and cellular state")
             speedmon.main()
+            get_wifi_info()
+            get_cellular_info()
         
         print(i)
         i += 30
         sleep(30)
         
 def get_wifi_info():
-    stats = []
     for ap in NetworkManager.AccessPoint.all():
         try:
-            stats = [ap.Ssid, ap.Strength]
+            update_tag('wifi_ssid', ap.Ssid)
+            update_tag('wifi_signal_strength', ap.Strength)
         except NetworkManager.ObjectVanished:
             pass
-    return stats
             
 def get_cellular_info():
     cmd = subprocess.run("mmcli -m 0 --simple-status | awk '/signal quality/||/state/ {print $4}'", shell=True, stdout=PIPE, stderr=PIPE)
     output = cmd.stdout.strip().decode().replace("'", "")
-    return [y for y in (x.strip() for x in output.splitlines()) if y]
+    info_array = [y for y in (x.strip() for x in output.splitlines()) if y]
+    update_tag('cellular_state', info_array[0])
+    update_tag('cellular_signal_strength', info_array[1])
+    
+def update_tag(tag, variable):
+    balena.models.tag.device.set(os.environ['BALENA_DEVICE_UUID'], str(tag), str(variable))
         
 def activate_connection(names):
     connection_types = ['wireless','wwan','wimax']
