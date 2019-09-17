@@ -12,18 +12,16 @@ if [ $? -eq 0 ]; then
     printf 'Skipping WiFi Connect\n'
 else
     printf 'Starting WiFi Connect\n'
-    ./wifi-connect -a 600
+    ./wifi-connect -a 600 -i wint
 fi
 
-sleep infinity
-
 # get wlan1 ready for monitor mode
-# airmon-ng start wlan1
+airmon-ng start wext
 
-# while [[ true ]]; do
-#   python3 src/main.py & # start initial python instance but return and continue
-#   PID1=$!
-# 
-#   wait $PID1
-#   echo 'Monitor script stopped, restarting . . .'
-# done
+while [[ true ]]; do
+  python3 src/main.py & # start initial python instance but return and continue
+  PID1=$!
+
+  wait $PID1
+  echo 'Monitor script stopped, restarting . . .'
+done

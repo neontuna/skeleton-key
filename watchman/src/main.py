@@ -2,7 +2,7 @@ from time import sleep
 from subprocess import PIPE
 import sys, os, re, subprocess
 import NetworkManager
-# import probemon
+import probemon
         
 def packet_loss(interface):
     try:
@@ -15,32 +15,32 @@ def packet_loss(interface):
 def main():
     i = 0
     eth0_online = False
-    wlan0_online = False
+    wint_online = False
     wwan0_online = False
     
     while True:
         print('Checking Internet status')
 
         # eth0_packet_loss = packet_loss('eth0')
-        wlan0_packet_loss = packet_loss('wlan0')
+        wint_packet_loss = packet_loss('wint')
         wwan0_packet_loss = packet_loss('wwan0')
         
         # eth0_online = eth0_packet_loss != None and int(eth0_packet_loss.group()) < 50
-        wlan0_online = wlan0_packet_loss != None and int(wlan0_packet_loss.group()) < 50
+        wint_online = wint_packet_loss != None and int(wint_packet_loss.group()) < 50
         wwan0_online = wwan0_packet_loss != None and int(wwan0_packet_loss.group()) < 50
         
-        print("wlan0: {0}, wwan0: {1}".format(wlan0_online, wwan0_online))
+        print("wifi: {0}, wwan0: {1}".format(wint_online, wwan0_online))
         
-        if wlan0_online == False and wwan0_online == False and os.environ['CELLULAR_FAILOVER'] == 'enabled':
+        if wint_online == False and wwan0_online == False and os.environ['CELLULAR_FAILOVER'] == 'enabled':
             print("Failing over to cellular backup")
             activate_connection(['cellular'])
-        elif wlan0_online == True and wwan0_online == True:
+        elif wint_online == True and wwan0_online == True:
             print("Main connection online, disabling cellular backup")
             deactivate_connection(['cellular'])
             
-        # if(i%300==0):
-        #     print("Checking for wireless clients")
-        #     probemon.main()
+        if(i%300==0):
+            print("Checking for wireless clients")
+            probemon.main()
         
         print(i)
         i += 30
