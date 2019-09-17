@@ -3,6 +3,7 @@ from subprocess import PIPE
 import sys, os, re, subprocess
 import NetworkManager
 import probemon
+import speedmon
         
 def packet_loss(interface):
     try:
@@ -41,6 +42,10 @@ def main():
         if(i%300==0):
             print("Checking for wireless clients")
             probemon.main()
+            
+        if(i%3600==0) and wint_online == True:
+            print("Running speed test")
+            speedmon.main()
         
         print(i)
         i += 30
