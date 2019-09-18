@@ -30,7 +30,6 @@ def get_sniffer_results():
 def post_results():
 	url = 'http://rabbu-testing.ngrok.io/webhooks/wifi_sniffer'
 	data = {"clients" : observedclients}
-    print(data)
 	requests.post(url, json=data)
 
 def main():
