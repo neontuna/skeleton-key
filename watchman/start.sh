@@ -15,9 +15,10 @@ else
     printf 'Starting WiFi Connect\n'
     ./wifi-connect -a 600 -i wint
 fi
+sleep 120
 
 # get wlan1 ready for monitor mode
-airmon-ng start wext
+# airmon-ng start wext
 
 while [[ true ]]; do
   python3 src/main.py & # start initial python instance but return and continue
