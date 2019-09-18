@@ -26,6 +26,10 @@ def main():
     
     while True:
         print('Checking Internet status')
+        
+        get_wifi_info()
+        get_cellular_info()
+        batterymon.update_battery_tags()
 
         # eth0_packet_loss = packet_loss('eth0')
         wint_packet_loss = packet_loss('wint')
@@ -51,9 +55,6 @@ def main():
         if(i%3600==0) and wint_online == True:
             print("Running speed test, checking battery, wifi and cellular state")
             speedmon.main()
-            get_wifi_info()
-            get_cellular_info()
-            batterymon.update_battery_tags()
         
         print(i)
         i += 30
