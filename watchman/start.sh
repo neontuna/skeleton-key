@@ -13,7 +13,7 @@ if [ $? -eq 0 ]; then
     printf 'Skipping WiFi Connect\n'
 else
     printf 'Starting WiFi Connect\n'
-    ./wifi-connect -a 600 -i wint
+    ./wifi-connect -a 600 #-i wint
 fi
 sleep 120
 
