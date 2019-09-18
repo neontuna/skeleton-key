@@ -1,17 +1,17 @@
 version: '2'
 
-# volumes:
-#   volume_homeassistant:
+volumes:
+  volume_homeassistant:
 
 services:
-  # homeassistant:
-  #   build: ./homeassistant
-  #   volumes:
-  #     - volume_homeassistant:/config
-  #   privileged: true
-  #   restart: always
-  #   ports: 
-  #     - 80:8123
+  homeassistant:
+    build: ./homeassistant
+    volumes:
+      - volume_homeassistant:/config
+    privileged: true
+    restart: always
+    ports: 
+      - 80:8123
   
   watchman:
     build: ./watchman
