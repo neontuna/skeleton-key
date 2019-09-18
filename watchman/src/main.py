@@ -26,10 +26,6 @@ def main():
     
     while True:
         print('Checking Internet status')
-        
-        get_wifi_info()
-        get_cellular_info()
-        batterymon.update_battery_tags()
 
         # eth0_packet_loss = packet_loss('eth0')
         wint_packet_loss = packet_loss('wint')
@@ -56,9 +52,15 @@ def main():
             print("Running speed test, checking battery, wifi and cellular state")
             speedmon.main()
         
+        sleep(15)
+        
+        get_wifi_info()
+        get_cellular_info()
+        batterymon.update_battery_tags()
+        
         print(i)
         i += 30
-        sleep(30)
+        sleep(15)
         
 def get_wifi_info():
     for ap in NetworkManager.AccessPoint.all():
@@ -77,6 +79,7 @@ def get_cellular_info():
     
 def update_tag(tag, variable):
     balena.models.tag.device.set(os.environ['BALENA_DEVICE_UUID'], str(tag), str(variable))
+    pass
         
 def activate_connection(names):
     connection_types = ['wireless','wwan','wimax']
