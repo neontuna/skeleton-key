@@ -21,16 +21,16 @@ def get_sniffer_results():
 	observedclients = []
 
 	session = AsyncSniffer(iface=interface, prn=sniffmgmt, store=False)
-    print(observedclients)
 	session.start()
 	sleep(60)
 	session.stop()
-    print(observedclients)
-    post_results()
+	
+	post_results()
 	
 def post_results():
 	url = 'http://rabbu-testing.ngrok.io/webhooks/wifi_sniffer'
 	data = {"clients" : observedclients}
+    print(data)
 	requests.post(url, json=data)
 
 def main():
