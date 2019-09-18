@@ -26,8 +26,7 @@ def get_sniffer_results():
 	sleep(60)
 	session.stop()
     print(observedclients)
-	
-	post_results()
+    post_results()
 	
 def post_results():
 	url = 'http://rabbu-testing.ngrok.io/webhooks/wifi_sniffer'
