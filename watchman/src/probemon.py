@@ -21,9 +21,11 @@ def get_sniffer_results():
 	observedclients = []
 
 	session = AsyncSniffer(iface=interface, prn=sniffmgmt, store=False)
+    print(observedclients)
 	session.start()
 	sleep(60)
 	session.stop()
+    print(observedclients)
 	
 	post_results()
 	
