@@ -17,3 +17,11 @@ script: !include scripts.yaml
 zwave:
   usb_path: /dev/serial/by-id/usb-0658_0200-if00
   network_key: "0x42, 0x43, 0x74, 0xF6, 0x73, 0xE7, 0xB6, 0x01, 0x88, 0x56, 0x28, 0xA4, 0x57, 0x5D, 0x6A, 0x25"
+  
+mqtt:
+  broker: bikini-cloud.neonwine.com
+  username: maestro
+  password: 6cf93f404926e060b43ec9202f40f458
+  
+mqtt_eventstream:
+  publish_topic: ha/sage-brush
