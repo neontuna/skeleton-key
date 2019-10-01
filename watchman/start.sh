@@ -3,8 +3,8 @@
 export DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
 
 # give pi a few seconds to finish boot and connect to wifi
-printf 'Sleeping on boot, UDEV race fix\n'
-sleep 20
+# printf 'Sleeping on boot, UDEV race fix\n'
+# sleep 20
 
 # check for active wifi connection
 iwgetid -r
@@ -17,12 +17,14 @@ else
 fi
 
 # get wlan1 ready for monitor mode
-airmon-ng start wext
+# airmon-ng start wext
 
-while [[ true ]]; do
-  python3 src/main.py & # start initial python instance but return and continue
-  PID1=$!
+# while [[ true ]]; do
+#   python3 src/main.py & # start initial python instance but return and continue
+#   PID1=$!
+# 
+#   wait $PID1
+#   echo 'Monitor script stopped, restarting . . .'
+# done
 
-  wait $PID1
-  echo 'Monitor script stopped, restarting . . .'
-done
+sleep infinity
