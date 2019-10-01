@@ -4,7 +4,7 @@ export DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
 
 # give pi a few seconds to finish boot and connect to wifi
 # printf 'Sleeping on boot, UDEV race fix\n'
-# sleep 20
+sleep 20
 
 # check for active wifi connection
 iwgetid -r
