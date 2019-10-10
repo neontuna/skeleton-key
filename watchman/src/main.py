@@ -70,7 +70,7 @@ def post_metrics_update():
     for obj in balena.models.tag.device.get_all():
         data[obj['tag_key']] = obj['value']
 
-	requests.post(url, json=data)
+    requests.post(url, json=data)
     pass
         
 def get_wifi_info():
