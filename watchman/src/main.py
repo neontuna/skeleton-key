@@ -47,6 +47,7 @@ def main():
         if(i%300==0):
             print("Checking for wireless clients")
             probemon.main()
+            post_metrics_update()
             
         if(i%3600==0) and wint_online == True:
             print("Running speed test")
@@ -61,8 +62,6 @@ def main():
         print(i)
         i += 30
         sleep(15)
-        
-        post_metrics_update()
         
 def post_metrics_update():
     url = 'http://rabbu-testing.ngrok.io/webhooks/status'
