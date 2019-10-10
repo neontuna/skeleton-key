@@ -49,7 +49,7 @@ def main():
             probemon.main()
             
         if(i%3600==0) and wint_online == True:
-            print("Running speed test, checking battery, wifi and cellular state")
+            print("Running speed test")
             speedmon.main()
         
         sleep(15)
