@@ -1,7 +1,7 @@
 from time import sleep
 from subprocess import PIPE
 from balena import Balena
-import sys, os, re, subprocess, getopt
+import sys, os, re, subprocess, getopt, json, requests
 import NetworkManager
 import probemon
 import speedmon
