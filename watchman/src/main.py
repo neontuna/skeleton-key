@@ -62,6 +62,17 @@ def main():
         i += 30
         sleep(15)
         
+        post_metrics_update()
+        
+def post_metrics_update():
+	url = 'http://rabbu-testing.ngrok.io/webhooks/status'
+	data = {"device_uuid" : os.environ['BALENA_DEVICE_UUID']}
+    for obj in balena.models.tag.device.get_all():
+        data[obj['tag_key']] = obj['value']
+        
+	requests.post(url, json=data)
+    pass
+        
 def get_wifi_info():
     for ap in NetworkManager.AccessPoint.all():
         try:
