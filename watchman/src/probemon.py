@@ -9,6 +9,9 @@ from scapy.all import *
 
 observedclients = []
 
+balena = Balena()
+balena.auth.login_with_token(os.environ['BALENA_API_KEY'])
+
 def sniffmgmt(p):
     stamgmtstypes = (0, 2, 4)
     if p.haslayer(Dot11):
@@ -32,6 +35,11 @@ def post_results():
 	# data = {"clients" : observedclients}
 	# requests.post(url, json=data)
     print(observedclients)
+    update_tag('wifi_client_count', len(observedclients))
+    
+def update_tag(tag, variable):
+    # update device tags
+    balena.models.tag.device.set(os.environ['BALENA_DEVICE_UUID'], str(tag), str(variable))
 
 def main():
 	thread = threading.Thread(target=get_sniffer_results)
