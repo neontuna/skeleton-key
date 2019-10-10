@@ -69,7 +69,7 @@ def post_metrics_update():
 	data = {"device_uuid" : os.environ['BALENA_DEVICE_UUID']}
     for obj in balena.models.tag.device.get_all():
         data[obj['tag_key']] = obj['value']
-        
+
 	requests.post(url, json=data)
     pass
         
