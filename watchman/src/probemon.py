@@ -15,7 +15,7 @@ balena = Balena()
 balena.auth.login_with_token(os.environ['BALENA_API_KEY'])
 
 def sniffmgmt(p):
-    stamgmtstypes = (4)
+    stamgmtstypes = (0, 2, 4)
     if p.haslayer(Dot11):
         if p.type == 0 and p.subtype in stamgmtstypes:
             if p.addr2 not in observedclients:
