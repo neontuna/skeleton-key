@@ -11,7 +11,7 @@ observedclients = []
 
 def sniffmgmt(p):
     stamgmtstypes = (0, 2, 4)
-    if p.haslayer(Dot11FCS):
+    if p.haslayer(Dot11):
         if p.type == 0 and p.subtype in stamgmtstypes:
             if p.addr2 not in observedclients:
                 observedclients.append(p.addr2)
