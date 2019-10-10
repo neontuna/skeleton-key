@@ -28,9 +28,10 @@ def get_sniffer_results():
 	post_results()
 	
 def post_results():
-	url = 'http://rabbu-testing.ngrok.io/webhooks/wifi_sniffer'
-	data = {"clients" : observedclients}
-	requests.post(url, json=data)
+	# url = 'http://rabbu-testing.ngrok.io/webhooks/wifi_sniffer'
+	# data = {"clients" : observedclients}
+	# requests.post(url, json=data)
+    print(observedclients)
 
 def main():
 	thread = threading.Thread(target=get_sniffer_results)

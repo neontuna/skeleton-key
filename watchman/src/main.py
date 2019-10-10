@@ -22,25 +22,25 @@ def main():
     i = 0
     eth0_online = False
     wint_online = False
-    wwan0_online = False
+    ppp0_online = False
     
     while True:
         print('Checking Internet status')
 
         # eth0_packet_loss = packet_loss('eth0')
         wint_packet_loss = packet_loss('wint')
-        wwan0_packet_loss = packet_loss('wwan0')
+        ppp0_packet_loss = packet_loss('ppp0')
         
         # eth0_online = eth0_packet_loss != None and int(eth0_packet_loss.group()) < 50
         wint_online = wint_packet_loss != None and int(wint_packet_loss.group()) < 50
-        wwan0_online = wwan0_packet_loss != None and int(wwan0_packet_loss.group()) < 50
+        ppp0_online = ppp0_packet_loss != None and int(ppp0_packet_loss.group()) < 50
         
-        print("wifi: {0}, wwan0: {1}".format(wint_online, wwan0_online))
+        print("wifi: {0}, ppp0: {1}".format(wint_online, ppp0_online))
         
-        if wint_online == False and wwan0_online == False and os.environ['CELLULAR_FAILOVER'] == 'enabled':
+        if wint_online == False and ppp0_online == False and os.environ['CELLULAR_FAILOVER'] == 'enabled':
             print("Failing over to cellular backup")
             activate_connection(['cellular'])
-        elif wint_online == True and wwan0_online == True:
+        elif wint_online == True and ppp0_online == True:
             print("Main connection online, disabling cellular backup")
             deactivate_connection(['cellular'])
             
