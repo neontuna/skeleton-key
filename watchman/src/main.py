@@ -64,7 +64,7 @@ def main():
         sleep(15)
         
 def post_metrics_update():
-    url = 'http://rabbu-testing.ngrok.io/webhooks/status'
+    url = 'https://rabbu-maestro.herokuapp.com/webhooks/status'
     data = {"device_uuid" : os.environ['BALENA_DEVICE_UUID']}
     data['display_name'] = balena.models.device.get_name(os.environ['BALENA_DEVICE_UUID'])
     for obj in balena.models.tag.device.get_all():
